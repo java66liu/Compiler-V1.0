@@ -1,0 +1,63 @@
+Status Stack now have : 0
+Char Stack now have : #
+Use Action->S2
+Status Stack push f
+Char Stack push : f
+Status Stack now have : 02
+Char Stack now have : #f
+Status and Char Stack pop 1 element(s)
+Status Stack push 8
+Use Goto->r14
+Status Stack now have : 08
+Char Stack now have : #G
+Use Action->S9
+Status Stack push s
+Char Stack push : s
+Status Stack now have : 089
+Char Stack now have : #Gs
+Use Action->S10
+Status Stack push (
+Char Stack push : (
+Status Stack now have : 08910
+Char Stack now have : #Gs(
+Use Action->S11
+Status Stack push )
+Char Stack push : )
+Status Stack now have : 0891011
+Char Stack now have : #Gs()
+Use Action->S12
+Status Stack push {
+Char Stack push : {
+Status Stack now have : 089101112
+Char Stack now have : #Gs(){
+Use Action->S450
+Status Stack push }
+Char Stack push : }
+Status Stack now have : 089101112450
+Char Stack now have : #Gs(){}
+Status and Char Stack pop 2 element(s)
+Status Stack push 457
+Use Goto->r26
+Status Stack now have : 0891011457
+Char Stack now have : #Gs()K
+Status and Char Stack pop 5 element(s)
+Status Stack push 1
+Use Goto->r17
+Status Stack now have : 01
+Char Stack now have : #F
+Status and Char Stack pop 1 element(s)
+Status Stack push 479
+Use Goto->r6
+Status Stack now have : 0479
+Char Stack now have : #D
+Status and Char Stack pop 1 element(s)
+Status Stack push 480
+Use Goto->r4
+Status Stack now have : 0480
+Char Stack now have : #C
+Status and Char Stack pop 1 element(s)
+Status Stack push 482
+Use Goto->r2
+Status Stack now have : 0482
+Char Stack now have : #B
+Now Accepted!
