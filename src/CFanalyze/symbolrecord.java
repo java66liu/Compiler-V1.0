@@ -28,8 +28,8 @@ public class symbolrecord {
 	public static symbolrecord[] newSymbolRecord(){
 		symbolrecord [] record=new symbolrecord[48];
 		String chars[]={"int","float","char","boolean","string","void","while","return","true","false","scanner","println",
-			"if","else","main","+", "-","*", "=", "<", ">",  "!", "?","(", ")", "[", "]", "{", "}", ";", ",","/","==","&","|",">=","<=","!="};
-		for(int a=0;a<38;a++){
+			"if","else","main","+", "-","*", "=", "<", ">",  "!", "?","(", ")", "[", "]", "{", "}", ";", ",","/","==","&","|",">=","<=","!=",":"};
+		for(int a=0;a<39;a++){
 			record[a]=new symbolrecord(chars[a],a+6);
 		}
 		return record;
@@ -48,7 +48,7 @@ public class symbolrecord {
 	public int isOper(char ch){
 		String str = String.valueOf(ch);
 		symbolrecord[] record=newSymbolRecord();
-		for(int i=15;i<38;i++){
+		for(int i=15;i<39;i++){
 			if(str.equals(record[i].symbol_name)){
 				return record[i].tag;
 			}
@@ -58,7 +58,7 @@ public class symbolrecord {
 	
 	public int isOper2(String ch){
 		symbolrecord[] record=newSymbolRecord();
-		for(int i=14;i<38;i++){
+		for(int i=14;i<39;i++){
 			if(ch.equals(record[i].symbol_name)){
 				return record[i].tag;
 			}

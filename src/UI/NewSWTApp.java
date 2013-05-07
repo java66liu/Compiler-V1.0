@@ -1,10 +1,13 @@
 package UI;
 
 import YFanalyze.closure;
+import YYanalyze.Lab3;
 
 import java.io.IOException;
 import TranslateG.Translate;
 import CFanalyze.CFanalyze;
+import HBproduce.HBgenerate;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -19,6 +22,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -39,11 +43,13 @@ import com.cloudgarden.resource.SWTResourceManager;
  */
 public class NewSWTApp extends org.eclipse.swt.widgets.Composite {
 
+	private Button HBproduce;
 	private Button YFanalyze;
 	private Button YYanalyze;
 	private Button transform;
 	private Button CFanalyze;
 	private Text Code;
+	private Label Title;
 	String CFresult="";
 	ReadFile readfile= new ReadFile();
 	Translate translate=new Translate();
@@ -64,10 +70,21 @@ public class NewSWTApp extends org.eclipse.swt.widgets.Composite {
 	 */
 	private void initGUI() {
 		try {
-			this.setSize(602, 301);
+			this.setSize(602, 370);
+			//setTitle("");
 			this.setBackground(SWTResourceManager.getColor(253, 245, 230));
 			FormLayout thisLayout = new FormLayout();
 			this.setLayout(thisLayout);
+			{
+				HBproduce = new Button(this, SWT.PUSH | SWT.CENTER);
+				FormData HBanalyzeLData = new FormData();
+				HBanalyzeLData.left =  new FormAttachment(0, 1000, 490);
+				HBanalyzeLData.top =  new FormAttachment(0, 1000, 301);
+				HBanalyzeLData.width = 98;
+				HBanalyzeLData.height = 35;
+				HBproduce.setLayoutData(HBanalyzeLData);
+				HBproduce.setText("生成汇编");
+			}
 			{
 				YYanalyze = new Button(this, SWT.PUSH | SWT.CENTER);
 				FormData YYanalyzeLData = new FormData();
@@ -76,7 +93,7 @@ public class NewSWTApp extends org.eclipse.swt.widgets.Composite {
 				YYanalyzeLData.width = 98;
 				YYanalyzeLData.height = 35;
 				YYanalyze.setLayoutData(YYanalyzeLData);
-				YYanalyze.setText("\u8bed\u4e49\u5206\u6790disabled");
+				YYanalyze.setText("\u8bed\u4e49\u5206\u6790");
 			}
 			{
 				YFanalyze = new Button(this, SWT.PUSH | SWT.CENTER);
@@ -109,12 +126,25 @@ public class NewSWTApp extends org.eclipse.swt.widgets.Composite {
 				CFanalyze.setText("\u8bcd\u6cd5\u5206\u6790");
 			}
 			{
+				Title = new Label(this, SWT.NONE);
+				FormData label1LData = new FormData();
+				label1LData.left =  new FormAttachment(0, 1000, 14);
+				label1LData.top =  new FormAttachment(0, 1000,6);
+				label1LData.width = 300;
+				label1LData.height = 21;
+				Title.setLayoutData(label1LData);
+				Title.setText("小型编译器Made By 李琛轩");
+				Title.setFont(new Font(Display.getCurrent(), "Cursive",13,SWT.NORMAL));
+				Title.setForeground(new Color(Display.getCurrent(), 59, 49, 30));
+				Title.setBackground(SWTResourceManager.getColor(253, 245, 230));
+			}
+			{
 				Code = new Text(this, SWT.MULTI | SWT.WRAP);
 				FormData CodeLData = new FormData();
 				CodeLData.left =  new FormAttachment(0, 1000, 14);
-				CodeLData.top =  new FormAttachment(0, 1000, 21);
+				CodeLData.top =  new FormAttachment(0, 1000, 30);
 				CodeLData.width = 454;
-				CodeLData.height = 266;
+				CodeLData.height = 316;
 				Code.setLayoutData(CodeLData);
 				Code.setBackground(new Color(Display.getCurrent(), 240, 240, 240));
 				Code.setForeground(new Color(Display.getCurrent(), 159, 149, 0));
@@ -142,6 +172,22 @@ public class NewSWTApp extends org.eclipse.swt.widgets.Composite {
 					
 				}
 			});
+			final Lab3 lab3=new Lab3();
+			YYanalyze.addSelectionListener(new SelectionAdapter() {
+				@SuppressWarnings("static-access")
+				public void widgetSelected(SelectionEvent e) {
+					
+					try {
+						lab3.getUse();
+						lab3.showAllUse();
+						Code.setText(lab3.readOut());
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			});
+			
 			YFanalyze.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					String neelu=Code.getText();
@@ -159,6 +205,16 @@ public class NewSWTApp extends org.eclipse.swt.widgets.Composite {
 						e1.printStackTrace();
 					}
 					
+				}
+			});
+			
+			HBproduce.addSelectionListener(new SelectionAdapter() {
+				@SuppressWarnings("static-access")
+				public void widgetSelected(SelectionEvent e) {
+					HBgenerate hb=new HBgenerate();
+					hb.checkDoor(lab3.Quatlist);
+					hb.makeHB(lab3.Quatlist);
+					Code.setText(hb.HBres);
 				}
 			});
 			this.layout();

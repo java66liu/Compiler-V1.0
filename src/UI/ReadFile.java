@@ -4,6 +4,7 @@ import java.io.*;
 
 public class ReadFile {
 
+	@SuppressWarnings("resource")
 	public String readCFresult() throws IOException{
 		String input="result_token.txt";
 

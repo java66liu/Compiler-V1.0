@@ -28,6 +28,7 @@ public class Translate {
 		return alltoken;
 	}
 	
+	@SuppressWarnings("resource")
 	public String find_error(int ip){
 		String input="result.txt";
 		try{

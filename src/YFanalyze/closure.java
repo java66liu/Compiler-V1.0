@@ -3,9 +3,12 @@ package YFanalyze;
 import java.util.*;
 import java.util.regex.*;
 import java.io.*;
+import YYanalyze.Lab3;
 
 public class closure {
 
+	static Lab3 newt=new Lab3();
+	
 	static String []ps=readG();
 	static String [][]psforfirst=transformGforFirst();
 	//static first first=new first();
@@ -38,6 +41,7 @@ public class closure {
 
 	static List <GOTABLE> GoList = new ArrayList<GOTABLE>();
 
+	@SuppressWarnings("resource")
 	public static String[] readG(){
 		String inputG="myG.txt";	
 		try{
@@ -198,129 +202,31 @@ public class closure {
 
 		list1=closureset(list1,new closure(firstStr,'#'));
 
-		for(int i=0;i<list1.size();i++){
-			System.out.println(list1.get(i).LRtext+","+list1.get(i).expected);
-		}
-
-		System.out.println(list1.size()+" Stop");
-		System.out.println("====================================");
-
 		Ilist.add(list1);
 		GoList.add(new GOTABLE(list1,0,-1,' '));
 
 		getAlllist(new GOTABLE(list1,0,-1,' '));
 
-		System.out.println(Ilist.size()+" Final");
-
-		for(int q=0;q<GoList.size();q++){
-			System.out.println("-----------------------------------"+(GoList.get(q).name));
-			System.out.println("-------------------------------And i am from "+(GoList.get(q).from));
-			System.out.println("-------------------------------And he use "+(GoList.get(q).connect));
-			debugshow(GoList.get(q).Iitem);
-			System.out.println("--------------------------------------");
-		}
-
-		System.out.println("+++++++++++++ACTION_TABLE IS AS FOLLOWED:+++++++++++++++++++++++++++++++");
 		List <ACTION_TABLE> lis=createtable(ps,GoList);
-		System.out.println(lis.size()+" lis.size!!!!!!!!");
 		for(int wa=0;wa<lis.size();wa++){
-			System.out.println(GoList.get(wa).name+":");
-			System.out.println(lis.get(wa).ch);
-			System.out.println(lis.get(wa).value);
 			action_output.write(String.format(GoList.get(wa).name+": "));
 			action_output.write(String.format(lis.get(wa).ch+"")+System.getProperty("line.separator"));
 			action_output.write(String.format(lis.get(wa).value+"")+System.getProperty("line.separator"));
 		}
-		System.out.println("+++++++++++++GOTO_TABLE IS AS FOLLOWED:+++++++++++++++++++++++++++++++");
+		/*System.out.println("+++++++++++++GOTO_TABLE IS AS FOLLOWED:+++++++++++++++++++++++++++++++");*/
 		List <GOTO_TABLE> lis2=createtable_goto(ps,GoList);
-		System.out.println(lis2.size()+" lis.size!!!!!!!!");
+		/*System.out.println(lis2.size()+" lis.size!!!!!!!!");*/
 		for(int wao=0;wao<lis2.size();wao++){
-			System.out.println(GoList.get(wao).name+":");
-			System.out.println(lis2.get(wao).ch);
-			System.out.println(lis2.get(wao).value);
 			goto_output.write(String.format(GoList.get(wao).name+": "));
 			goto_output.write(String.format(lis2.get(wao).ch+"")+System.getProperty("line.separator"));
 			goto_output.write(String.format(lis2.get(wao).value+"")+System.getProperty("line.separator"));
 		}
-		System.out.println("ALl things done !!!   but list1 length is "+list1.size()); 
+		
 		action_output.flush();
 		action_output.close();
 		goto_output.flush();
 		goto_output.close();
 		return LRanalyze(testsh,lis,lis2);
-	}
-
-
-
-	public static void main(String args[]) throws IOException{
-
-		first.setPs(psforfirst);
-		String firstStr="";
-
-		String action_result="action_result.txt";
-		String goto_result="goto_result.txt";
-
-		BufferedWriter action_output=new BufferedWriter(new FileWriter(action_result));
-		BufferedWriter goto_output=new BufferedWriter(new FileWriter(goto_result));
-
-		firstStr=ps[0].substring(0, ps[0].indexOf("->")+2)+'.'+ps[0].substring(ps[0].indexOf("->")+2,ps[0].length());
-		List <closure> list1 = new ArrayList<closure>();
-
-		list1=closureset(list1,new closure(firstStr,'#'));
-
-		for(int i=0;i<list1.size();i++){
-			System.out.println(list1.get(i).LRtext+","+list1.get(i).expected);
-		}
-
-		System.out.println(list1.size()+" Stop");
-		System.out.println("====================================");
-
-		Ilist.add(list1);
-		GoList.add(new GOTABLE(list1,0,-1,' '));
-
-		getAlllist(new GOTABLE(list1,0,-1,' '));
-
-		System.out.println(Ilist.size()+" Final");
-
-		for(int q=0;q<GoList.size();q++){
-			System.out.println("-----------------------------------"+(GoList.get(q).name));
-			System.out.println("-------------------------------And i am from "+(GoList.get(q).from));
-			System.out.println("-------------------------------And he use "+(GoList.get(q).connect));
-			debugshow(GoList.get(q).Iitem);
-			System.out.println("--------------------------------------");
-		}
-
-		System.out.println("+++++++++++++ACTION_TABLE IS AS FOLLOWED:+++++++++++++++++++++++++++++++");
-		List <ACTION_TABLE> lis=createtable(ps,GoList);
-		System.out.println(lis.size()+" lis.size!!!!!!!!");
-		for(int wa=0;wa<lis.size();wa++){
-			System.out.println(GoList.get(wa).name+":");
-			System.out.println(lis.get(wa).ch);
-			System.out.println(lis.get(wa).value);
-			action_output.write(String.format(GoList.get(wa).name+": "));
-			action_output.write(String.format(lis.get(wa).ch+"")+System.getProperty("line.separator"));
-			action_output.write(String.format(lis.get(wa).value+"")+System.getProperty("line.separator"));
-		}
-		System.out.println("+++++++++++++GOTO_TABLE IS AS FOLLOWED:+++++++++++++++++++++++++++++++");
-		List <GOTO_TABLE> lis2=createtable_goto(ps,GoList);
-		System.out.println(lis2.size()+" lis.size!!!!!!!!");
-		for(int wao=0;wao<lis2.size();wao++){
-			System.out.println(GoList.get(wao).name+":");
-			System.out.println(lis2.get(wao).ch);
-			System.out.println(lis2.get(wao).value);
-			goto_output.write(String.format(GoList.get(wao).name+": "));
-			goto_output.write(String.format(lis2.get(wao).ch+"")+System.getProperty("line.separator"));
-			goto_output.write(String.format(lis2.get(wao).value+"")+System.getProperty("line.separator"));
-		}
-		System.out.println("ALl things done !!!   but list1 length is "+list1.size());  
-		LRanalyze("as(){l($);hz;}ay(){ay;y=z;g(y<z){y=y+z;}}",lis,lis2);
-
-	}
-
-	public static void debugshow(List<closure> list){
-		for(int i=0;i<list.size();i++){
-			System.out.println(list.get(i).LRtext+","+list.get(i).expected);
-		}
 	}
 
 	static int count=0;	
@@ -532,12 +438,7 @@ public class closure {
 
 	public static String getFirsts(String set){   //  get First Set (String)
 		String result="";
-
-		//for(int i=0;i<set.length();i++){
-
 		result+=getFirst(set.charAt(0));
-		//}
-
 		return result;
 	}
 
@@ -553,7 +454,6 @@ public class closure {
 						res+=psforfirst[i][1].charAt(0);
 					}
 				}
-				//res+=psforfirst[i][1].charAt(0);
 			}
 		}
 		return res;
@@ -564,14 +464,15 @@ public class closure {
 	 * */
 	static TranslateG.Translate tran=new TranslateG.Translate();
 	
+	@SuppressWarnings("resource")
 	public static String LRanalyze(String test,List <ACTION_TABLE> actiontab,List <GOTO_TABLE> gototab) throws IOException{
 		System.out.println("-------------------Here   we   come   in    analyze-----------------------");
-		/*
-		 * */
+	
 		String output_an="out_analyze.txt";
+		String outsr="usewhat.txt";
 		BufferedWriter output=new BufferedWriter(new FileWriter(output_an));
-		/*
-		 * */
+		BufferedWriter output2=new BufferedWriter(new FileWriter(outsr));
+	
 		Stack <Character> chStack = new Stack <Character> ();
 		Stack <Integer> statusStack = new Stack <Integer> ();
 		chStack.push('#');
@@ -580,13 +481,10 @@ public class closure {
 		int ip=0;
 		String tmpuse;
 		while(true){
-			/*System.out.println("----------");*/
 			output.write(String.format("Status Stack now have : "+putsStack(statusStack))+System.getProperty("line.separator"));
 			output.write(String.format("Char Stack now have : "+putsStack(chStack))+System.getProperty("line.separator"));
 			int topstatus=statusStack.peek();
-			/*System.out.println(topstatus+"!!!!!!!!");*/
 			if((tmpuse=find_in_action(actiontab,topstatus,tempStr.charAt(ip)))!=null){
-				/*System.out.println("tmpuse is : "+tmpuse);*/
 				if(tmpuse.charAt(0)=='S'){
 					int stmt=0; 
 					if(tmpuse.length()==2){
@@ -601,8 +499,7 @@ public class closure {
 					chStack.push(tempStr.charAt(ip));
 					output.write(String.format("Status Stack push "+tempStr.charAt(ip))+System.getProperty("line.separator"));
 					output.write(String.format("Char Stack push : "+tempStr.charAt(ip))+System.getProperty("line.separator"));
-					/*printstack(statusStack);
-					printstack(chStack);*/
+					
 					ip++;
 				}else if(tmpuse.charAt(0)=='r'){
 					int linenum=0;
@@ -612,6 +509,8 @@ public class closure {
 					else if(tmpuse.length()>2){
 						linenum=Integer.valueOf(tmpuse.substring(1,tmpuse.length()));
 					}
+					//newt.getUse(linenum);
+					output2.write(String.format(""+linenum)+System.getProperty("line.separator"));
 					int length=ps[linenum-1].length()-3;
 					for(int k=0;k<length;k++){
 						chStack.pop();
@@ -623,16 +522,18 @@ public class closure {
 					String tmpStr=find_in_goto(gototab,topstatus2,ps[linenum-1].charAt(0));
 					if(tmpStr!=null){
 						statusStack.push(Integer.parseInt(tmpStr));
-						/*System.out.println(ps[linenum-1]+"       from ANALYZE");*/
 						output.write(String.format("Status Stack push "+Integer.parseInt(tmpStr))+System.getProperty("line.separator"));
 					}
 					output.write(String.format("Use Goto->"+tmpuse)+System.getProperty("line.separator"));
 				}else if(tmpuse.equals("acc")){
-					System.out.println(ps[0]);
 					System.out.println("Have been accepted!");
 					output.write(String.format("Now Accepted!")+System.getProperty("line.separator"));
+					output2.write(String.format("1")+System.getProperty("line.separator"));
 					output.flush();
 					output.close();
+					output2.flush();
+					output2.close();
+					//newt.showAllUse();
 					return "Have been accepted!";
 				}else if(tmpuse.equals("error")){
 					System.out.println("Error in "+tempStr.charAt(ip)+" character!");
@@ -661,8 +562,6 @@ public class closure {
 			}
 			ret++;
 		}
-		//System.out.println(res+"~~~~~~~~~~~~~~~~~~~~");
-		//return res.charAt(1)-48;
 		return null;
 	}
 	public static String find_in_goto(List <GOTO_TABLE> gototab,int status,char ch){
@@ -682,7 +581,7 @@ public class closure {
 	public static void printstack(Stack<?> stack){
 		int len=stack.size();
 		for(int i=0;i<len;i++){
-			System.out.println(stack.peek());
+			//System.out.println(stack.peek());
 			stack.pop();
 		}
 	}

@@ -9,6 +9,7 @@ public class CFanalyze {
 	static symbolrecord symbolrecord=new symbolrecord();
 	
 	static sym_table sym=new sym_table();
+	static value_table val=new value_table();
 
 	public static Boolean isAlpha(char ch) {  
 		return ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_');  
@@ -132,20 +133,18 @@ public class CFanalyze {
 							}
 						}
 						else{//suggest it is biaoshifu
-							if(tablelist.isEmpty() || !isExist(tmpToken)){
+							//if(tablelist.isEmpty() || !isExist(tmpToken)){
 								sym_table new_sym=new sym_table(tablelist.size(),1,tmpToken);
 								tablelist.add(new_sym); 
-								//put into sym_table
 								System.out.println(tmpToken+"    <1,"+(tablelist.size()-1)+">");
 								output.write(String.format(tmpToken+"    <1,"+(tablelist.size()-1)+">")+System.getProperty("line.separator"));
 								output_token.write(String.format("y")+System.getProperty("line.separator"));
- 							}else{
+								/*}else{
 								System.out.println("TIPS :    标识符重复了!");
-								//output.write(String.format("TIPS :    标识符重复了!")+System.getProperty("line.separator"));
 								System.out.println(tmpToken+"    <1,"+(tablelist.size()-1)+">");
 								output.write(String.format(tmpToken+"    <1,"+(tablelist.size()-1)+">")+System.getProperty("line.separator"));
 								output_token.write(String.format("y")+System.getProperty("line.separator"));
-							}
+							}*/
 						}
 						i--;
 						tmpToken="";
@@ -162,10 +161,12 @@ public class CFanalyze {
 						if(isRightDig(tmpToken)){
 							if(tmpToken.indexOf(".")==-1&&tmpToken.indexOf("e")==-1 ){
 								System.out.println(tmpToken+"     <2,整数>");
+								valuelist.add(new value_table(valuelist.size(),tmpToken,"int"));
 								output.write(String.format(tmpToken+"     <2,整数>")+System.getProperty("line.separator"));								
 								output_token.write(String.format("z")+System.getProperty("line.separator"));
 							}else if(tmpToken.indexOf("e")>-1||tmpToken.indexOf(".")>-1 ){
 								System.out.println(tmpToken+"     <3,浮点数>");
+								valuelist.add(new value_table(valuelist.size(),tmpToken,"float"));
 								output.write(String.format(tmpToken+"     <3,浮点数>")+System.getProperty("line.separator"));
 								output_token.write(String.format("x")+System.getProperty("line.separator"));
 							}
@@ -192,6 +193,7 @@ public class CFanalyze {
 								//output.write(String.format("ERROR： 字符长度只能是1!")+System.getProperty("line.separator"));
 							}else{
 								System.out.println(tmpToken+"     <4,字符常量>");
+								valuelist.add(new value_table(valuelist.size(),tmpToken,"char"));
 								//output.write(String.format(tmpToken+"     <4,字符常量>")+System.getProperty("line.separator"));
 								output_token.write(String.format("@")+System.getProperty("line.separator"));
 							}
@@ -212,6 +214,7 @@ public class CFanalyze {
 						}
 						if(RightChars){
 							System.out.println("\""+tmpToken+"\""+"     <5,字符串常量>");
+							//valuelist.add(new value_table(valuelist.size(),tmpToken));
 							output.write(String.format("\""+tmpToken+"\""+"     <5,字符串常量>")+System.getProperty("line.separator"));
 							output_token.write(String.format(String.valueOf("$"))+System.getProperty("line.separator"));
 						}else{
@@ -370,6 +373,7 @@ public class CFanalyze {
 				System.out.println(tablelist.get(nu).position+" "+tablelist.get(nu).sym_name+" "+tablelist.get(nu).type);
 			}
 			sym.println(tablelist);
+			val.println(valuelist);
 			output.flush();
 			output_token.flush();
 			output.close();
@@ -380,6 +384,7 @@ public class CFanalyze {
 		/******************************************************************************/
 	}
 	static ArrayList<sym_table> tablelist=new ArrayList<sym_table>();
+	static ArrayList<value_table> valuelist=new ArrayList<value_table>();
 
 	public static boolean isExist(String str){
 		for(int i = 0;i < tablelist.size(); i ++){
